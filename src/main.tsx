@@ -7,6 +7,7 @@ import { ThemeProvider } from "./providers/theme.providers.tsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 import { Toaster } from "sonner";
+import "leaflet/dist/leaflet.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
