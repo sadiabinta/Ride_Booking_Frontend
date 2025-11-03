@@ -46,9 +46,6 @@ export default function Navbar() {
     logout(undefined);
     dispatch(authApi.util.resetApiState());
   };
-  // if (!isLoading) {
-  // console.log(data.data);
-  // }
   return (
     <header className="border-b">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
@@ -57,13 +54,14 @@ export default function Navbar() {
           {/* Mobile menu trigger */}
           <Popover>
             <PopoverTrigger asChild>
-              <Button
+              <Link
+                to="/"
                 className="group size-8 md:hidden"
-                variant="ghost"
-                size="icon"
+                // variant="ghost"
+                // size="icon"
               >
                 <Logo />
-              </Button>
+              </Link>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
@@ -92,9 +90,9 @@ export default function Navbar() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Link to="/" className="text-primary hover:text-primary/90">
               <Logo />
-            </a>
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">

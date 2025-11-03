@@ -4,7 +4,7 @@ export default function HeroSection() {
   return (
     <div className="border-b px-4 py-3 container mx-auto">
       <div className="flex items-center justify-between">
-        <p className="text-left text-xl">
+        <p className="text-left text-sm sm:text-xl">
           <span className="mr-1">
             <Link to="/register">📫</Link>
           </span>
