@@ -16,7 +16,17 @@ export const riderApi = baseApi.injectEndpoints({
         data: rideInfo,
       }),
     }),
+    allRides: builder.query({
+      query: () => ({
+        url: "/rides/history",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useRequestRideMutation, useEstimateFareMutation } = riderApi;
+export const {
+  useRequestRideMutation,
+  useEstimateFareMutation,
+  useAllRidesQuery,
+} = riderApi;

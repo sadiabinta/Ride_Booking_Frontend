@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -24,13 +25,12 @@ import {
   Marker,
   Popup,
   Polyline,
-} from "react-leaflet"; // <--- ADDED Polyline
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
 import { User, Clock } from "lucide-react";
 
-// Fix default marker icon issue
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import {
@@ -48,7 +48,6 @@ const defaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = defaultIcon;
 
-// form type
 type RideFormValues = {
   pickup: string;
   dropoff: string;
@@ -56,13 +55,12 @@ type RideFormValues = {
   forWhom: string;
 };
 
-// Define a type for a coordinate pair (Latitude, Longitude)
 type Coords = [number, number];
 
 export default function RequestRide() {
   const [pickupCoords, setPickupCoords] = useState<Coords>([27.974, -82.454]);
   const [dropoffCoords, setDropoffCoords] = useState<Coords | null>(null);
-  const [routeCoords, setRouteCoords] = useState<Coords[]>([]); // <--- NEW STATE FOR ROUTE
+  const [routeCoords, setRouteCoords] = useState<Coords[]>([]);
   const [pickupSuggestions, setPickupSuggestions] = useState<any[]>([]);
   const [dropoffSuggestions, setDropoffSuggestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -84,7 +82,6 @@ export default function RequestRide() {
     },
   });
 
-  // 🔍 Fetch location suggestions
   const fetchSuggestions = async (
     query: string,
     type: "pickup" | "dropoff"
@@ -113,14 +110,12 @@ export default function RequestRide() {
     }
   };
 
-  // 🗺️ NEW: Fetch and draw route
   const fetchRoute = async (start: Coords, end: Coords | null) => {
     if (!end || (end[0] === 0 && end[1] === 0)) {
       setRouteCoords([]);
       return;
     }
 
-    // OSRM expects coordinates as Longitude, Latitude for the API call
     const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${start[1]},${start[0]};${end[1]},${end[0]}?geometries=geojson`;
 
     try {
@@ -128,7 +123,6 @@ export default function RequestRide() {
       const route = response.data.routes[0];
 
       if (route) {
-        // The GeoJSON coordinates are [lon, lat], but react-leaflet's Polyline expects [lat, lon]
         const geojsonCoords: [number, number][] = route.geometry.coordinates;
         const leafletCoords: Coords[] = geojsonCoords.map(([lon, lat]) => [
           lat,
@@ -142,7 +136,6 @@ export default function RequestRide() {
     }
   };
 
-  // 🗺️ Handle suggestion click - UPDATED to call fetchRoute
   const handleSelectSuggestion = (
     suggestion: any,
     type: "pickup" | "dropoff"
@@ -156,14 +149,14 @@ export default function RequestRide() {
       form.setValue("pickup", displayName);
       setPickupCoords(newCoords);
       setPickupSuggestions([]);
-      // If dropoff is already set, draw the new route
+
       fetchRoute(newCoords, dropoffCoords);
     } else {
       const newCoords: Coords = [lat, lon];
       form.setValue("dropoff", displayName);
       setDropoffCoords(newCoords);
       setDropoffSuggestions([]);
-      // Draw the new route using the current pickup coordinates
+
       fetchRoute(pickupCoords, newCoords);
     }
   };
@@ -393,7 +386,7 @@ export default function RequestRide() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <MapBoundsUpdater routeCoords={routeCoords} />
-          {/* ADDED: Draw the Polyline if route coordinates are available */}
+
           {routeCoords.length > 0 && (
             <Polyline positions={routeCoords} color="blue" weight={5} />
           )}
@@ -412,8 +405,8 @@ export default function RequestRide() {
       <SearchRideModal
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        rideDetails={rideSummary} // Pass the estimated data
-        onConfirm={handleConfirmBooking} // Pass the final booking function
+        rideDetails={rideSummary}
+        onConfirm={handleConfirmBooking}
         isLoading={loading}
       />
     </div>

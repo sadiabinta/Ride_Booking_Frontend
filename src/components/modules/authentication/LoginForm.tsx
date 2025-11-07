@@ -14,9 +14,10 @@ import { Input } from "@/components/ui/input";
 import Password from "@/components/ui/Password";
 import config from "@/config";
 import { cn } from "@/lib/utils";
-import { useLoginMutation } from "@/redux/features/auth/auth.api";
+import { authApi, useLoginMutation } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import z from "zod";
@@ -38,6 +39,7 @@ export function LoginForm({
   });
   const [login] = useLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const userInfo = {
       email: data.email,
@@ -46,6 +48,7 @@ export function LoginForm({
     try {
       await login(userInfo).unwrap();
       toast.success("User Loggedin Successfully!!");
+      dispatch(authApi.util.invalidateTags(["USER"]));
 
       navigate("/");
     } catch (error) {
@@ -56,8 +59,6 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-4", className)} {...props}>
       <Card className="relative overflow-hidden p-0 bg-transparent mt-8 mx-8 text-orange-200 border-l-8 border-orange-400">
         <CardContent className="">
-          {/* <form className="p-6 md:p-8"> */}
-          {/* <FieldGroup> */}
           <div className="flex flex-col items-center gap-2 text-center mt-4 ">
             <h1 className="text-2xl font-bold text-orange-200">Welcome back</h1>
             <p className="text-orange-300 text-balance">
@@ -156,8 +157,6 @@ export function LoginForm({
               </FieldDescription>
             </form>
           </Form>
-          {/* </FieldGroup> */}
-          {/* </form> */}
           <div className="bg-muted relative hidden md:block">
             <img
               src="/placeholder.svg"

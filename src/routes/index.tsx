@@ -85,6 +85,9 @@ export const router = createBrowserRouter([
   {
     Component: withAuth(DashboardLayout, role.driver as TRole),
     path: "/driver",
-    children: [...generateRoutes(driverSidebarItems)],
+    children: [
+      { index: true, element: <Navigate to="/driver/requested" /> },
+      ...generateRoutes(driverSidebarItems),
+    ],
   },
 ]);

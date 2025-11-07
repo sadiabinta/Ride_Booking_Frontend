@@ -22,12 +22,9 @@ import {
 } from "@/redux/features/auth/auth.api";
 import { useDispatch } from "react-redux";
 import { role } from "@/constants/role";
-// import { role } from "@/constants/role";
-
-// Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
-  { href: "/requestRide", label: "Ride", role: "PUBLIC" },
+  { href: "/requestRide", label: "Ride", role: role.rider },
   { href: "/about", label: "About Us", role: "PUBLIC" },
   { href: "/features", label: "Features", role: "PUBLIC" },
   { href: "/contact", label: "Contact", role: "PUBLIC" },
@@ -35,7 +32,6 @@ const navigationLinks = [
   { href: "/admin", label: "Dashboard", role: role.admin },
   { href: "/driver", label: "Dashboard", role: role.driver },
   { href: "/rider", label: "Dashboard", role: role.rider },
-  { href: "/profile", label: "Profile", role: role.driver },
 ];
 
 export default function Navbar() {
@@ -54,36 +50,26 @@ export default function Navbar() {
           {/* Mobile menu trigger */}
           <Popover>
             <PopoverTrigger asChild>
-              <Link
-                to="/"
-                className="group size-8 md:hidden"
-                // variant="ghost"
-                // size="icon"
-              >
+              <Link to="/" className="group size-8 md:hidden">
                 <Logo />
               </Link>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
-                    <>
-                      {link.role === "PUBLIC" && (
+                  {navigationLinks.map((link, index) => {
+                    const userRole = data?.data?.user?.role;
+                    if (link.role === "PUBLIC" || link.role === userRole) {
+                      return (
                         <NavigationMenuItem key={index} className="w-full">
                           <NavigationMenuLink asChild className="py-1.5">
                             <Link to={link.href}>{link.label}</Link>
                           </NavigationMenuLink>
                         </NavigationMenuItem>
-                      )}
-                      {link.role === data?.data?.role && (
-                        <NavigationMenuItem key={index} className="w-full">
-                          <NavigationMenuLink asChild className="py-1.5">
-                            <Link to={link.href}>{link.label}</Link>
-                          </NavigationMenuLink>
-                        </NavigationMenuItem>
-                      )}
-                    </>
-                  ))}
+                      );
+                    }
+                    return null;
+                  })}
                 </NavigationMenuList>
               </NavigationMenu>
             </PopoverContent>
@@ -96,9 +82,10 @@ export default function Navbar() {
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <>
-                    {link.role === "PUBLIC" && (
+                {navigationLinks.map((link, index) => {
+                  const userRole = data?.data?.user?.role;
+                  if (link.role === "PUBLIC" || link.role === userRole) {
+                    return (
                       <NavigationMenuItem key={index}>
                         <NavigationMenuLink
                           asChild
@@ -107,19 +94,10 @@ export default function Navbar() {
                           <Link to={link.href}>{link.label}</Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
-                    )}
-                    {link.role === data?.data?.role && (
-                      <NavigationMenuItem key={index}>
-                        <NavigationMenuLink
-                          asChild
-                          className="py-1.5 font-medium text-muted-foreground hover:text-primary"
-                        >
-                          <Link to={link.href}>{link.label}</Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    )}
-                  </>
-                ))}
+                    );
+                  }
+                  return null;
+                })}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
@@ -129,17 +107,17 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <ModeToggler />
             {/* Notification */}
-            {data?.data?.email && <NotificationMenu />}
+            {data?.data?.user?.email && <NotificationMenu />}
           </div>
           {/* User menu */}
 
-          {data?.data?.email && <UserMenu />}
-          {!data?.data?.email && (
+          {data?.data?.user?.email && <UserMenu />}
+          {!data?.data?.user?.email && (
             <Button asChild size="sm" className="text-sm">
               <Link to="/login">Login</Link>
             </Button>
           )}
-          {data?.data?.email && (
+          {data?.data?.user?.email && (
             <Button
               onClick={handleLogout}
               variant="outline"

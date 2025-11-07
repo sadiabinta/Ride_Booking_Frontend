@@ -1,5 +1,4 @@
 import Allrides from "@/pages/user/Allrides";
-import Profile from "@/pages/user/Profile";
 import RequestRide from "@/pages/user/RequestRide";
 import RideDetails from "@/pages/user/RideDetails";
 
@@ -21,11 +20,6 @@ export const userSidebarItems = [
         title: "Request Ride",
         url: "/rider/RequestRide",
         component: RequestRide,
-      },
-      {
-        title: "Profile",
-        url: "/rider/profile",
-        component: Profile,
       },
     ],
   },

@@ -41,14 +41,4 @@ export const adminSidebarItems = [
       },
     ],
   },
-  // {
-  //   title: "Others",
-  //   items: [
-  //     {
-  //       title: "Profile",
-  //       url: "/admin/profile",
-  //       component: Profile,
-  //     },
-  //   ],
-  // },
 ];

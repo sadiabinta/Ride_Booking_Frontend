@@ -21,7 +21,7 @@ import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: userData } = useUserInfoQuery(undefined);
   const data = {
-    navMain: getSidebarItems(userData?.data?.role),
+    navMain: getSidebarItems(userData?.data?.user?.role),
   };
   return (
     <Sidebar {...props}>
@@ -42,6 +42,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+                <div className="ml-2 mt-16 flex flex-col gap-4">
+                  <Link to="/">Home</Link>
+
+                  <Link to="/profile">Profile</Link>
+                </div>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
