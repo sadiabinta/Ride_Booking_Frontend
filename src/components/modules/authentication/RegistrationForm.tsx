@@ -25,9 +25,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import React, { useEffect } from "react";
-import { useRegisterMutation } from "@/redux/features/auth/auth.api";
+import { authApi, useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
 const formSchema = z
   .object({
@@ -74,6 +75,7 @@ export function RegistrationForm({
 
   const [register] = useRegisterMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const userInfo = {
       name: data.name,
@@ -89,6 +91,7 @@ export function RegistrationForm({
     try {
       await register(userInfo).unwrap();
       toast.success("Registration done successfully");
+      dispatch(authApi.util.invalidateTags(["USER"]));
       navigate("/");
     } catch (error) {
       console.log(error);

@@ -57,7 +57,7 @@ export default function ActiveRide() {
   const handlePickup = async () => {
     try {
       const result = await pickedup(id).unwrap();
-      if (result.data) {
+      if (result?.data) {
         setRide(result?.data);
         toast.success("Rider picked up");
       }
@@ -68,7 +68,7 @@ export default function ActiveRide() {
   const handleComplete = async () => {
     try {
       const result = await completeRide(id).unwrap();
-      if (result.data) {
+      if (result?.data) {
         setRide(result?.data);
         toast.success("Rider Completed!!!");
       }
@@ -98,7 +98,7 @@ export default function ActiveRide() {
       <Card className="w-[350px] shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <User className="text-primary" /> {ride?.riderId.name}
+            <User className="text-primary" /> {ride?.riderId?.name}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm">
@@ -107,7 +107,7 @@ export default function ActiveRide() {
             <div>
               <p className="font-semibold">Pickup</p>
               <p className="text-muted-foreground">
-                {ride?.pickupLocation.address}
+                {ride?.pickupLocation?.address}
               </p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function ActiveRide() {
             <div>
               <p className="font-semibold">Destination</p>
               <p className="text-muted-foreground">
-                {ride?.destinationLocation.address}
+                {ride?.destinationLocation?.address}
               </p>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function ActiveRide() {
               <Clock className="inline-block h-4 w-4 mr-1 text-primary" />
               {ride?.requestedAt}
             </p>
-            <p className="font-semibold">{ride?.distance.toFixed(2)}</p>
+            <p className="font-semibold">{ride?.distance?.toFixed(2)}</p>
           </div>
           <div className="text-lg font-semibold text-right text-primary">
             {ride?.fare}

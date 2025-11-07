@@ -14,11 +14,6 @@ export const adminSidebarItems = [
         url: "/admin/analytics",
         component: Analytics,
       },
-    ],
-  },
-  {
-    title: "Rider",
-    items: [
       {
         title: "All Rider",
         url: "/admin/riders",
@@ -29,11 +24,6 @@ export const adminSidebarItems = [
         url: "/admin/manageUsers",
         component: ManageUser,
       },
-    ],
-  },
-  {
-    title: "Driver",
-    items: [
       {
         title: "Manage Drivers",
         url: "/admin/manageDrivers",
